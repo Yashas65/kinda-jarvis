@@ -1,10 +1,10 @@
 import ollama
 import subprocess
-
+from tts.tts import speak
 from tools import TOOL_SCHEMA, TOOL_FUNC
 
-SYSTEM = {"role": "system", "content": "You are a helpful and friendly desktop assistant. Be concise."}
-
+SYSTEM = {"role": "system", "content": "you are a desktop assistant , your personality traits are - sarcastics , humourous, frank , straightforword"}
+MODEL = "qwen3.5:9b-q4_K_M"
 
 #func that runs the model
 def run(user_input, history):
@@ -12,9 +12,14 @@ def run(user_input, history):
 
     while True:
         response = ollama.chat(
-            model = "qwen2.5:7b-instruct",
-            messages=history,  # this contains current prompt with the previous ones
-            tools=TOOL_SCHEMA   # defined above 
+            model = MODEL,
+            messages=[SYSTEM]+history,  # this contains current prompt with the previous ones
+            tools=TOOL_SCHEMA,   # defined above 
+            options={
+                "think": False,
+                "mmap": True, 
+                "mlock": True,
+                },
         )
         message = response["message"]
 
@@ -23,19 +28,13 @@ def run(user_input, history):
             return message["content"], history
 
         
-        history.append(message) # this step is req. even if we get tool calls in message
+        history.append(message) 
 
         for tool_call in message["tool_calls"]:
             name = tool_call["function"]["name"]
             args = tool_call["function"]["arguments"]
             func   = TOOL_FUNC[name]
             result = func(**args)
-            # call the matching Python function
-            if name == "get_time":
-                result = get_time()
-            elif name == "open_app":
-                result = open_app(**args)
-
 
             history.append({"role": "tool", "content": result})
 
@@ -46,6 +45,7 @@ def main ():
     while True:
         user_input = input("You: ")
         reply, history = run(user_input, history)
+        speak(reply)
         print(f"Assistant: {reply}")
 
 
