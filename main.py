@@ -3,8 +3,10 @@ import subprocess
 from tts.tts import speak
 from tools import TOOL_SCHEMA, TOOL_FUNC
 
-SYSTEM = {"role": "system", "content": "you are a desktop assistant , your personality traits are - sarcastics , humourous, frank , straightforword"}
-MODEL = "qwen3.5:9b-q4_K_M"
+SYSTEM = {"role": "system", "content": "you are a desktop assistant , your personality traits are - sarcastics , humourous, frank , straightforword, you can call tools to work around on the desktop. stay short"}
+#MODEL = "qwen3.5:9b-q4_K_M"
+#MODEL = "qwen3.5:4b"
+MODEL = "qwen3.5:397b-cloud"
 
 #func that runs the model
 def run(user_input, history):
@@ -36,7 +38,7 @@ def run(user_input, history):
             func   = TOOL_FUNC[name]
             result = func(**args)
 
-            history.append({"role": "tool", "content": result})
+            history.append({"role": "tool", "content": str(result)})
 
 
 def main ():

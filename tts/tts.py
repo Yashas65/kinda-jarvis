@@ -7,7 +7,9 @@ PIPER = "piper-tts"     #by which your system know this tool
 MODEL_PATH = "tts/models/ryan.onnx"   
 
 def speak(text: str):
-    
+    text = text.replace("*"," . ")
+    text = text.replace("_","-")
+    text = text.replace('/',' . ')
     with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:
         f.write(text)
         tmp_path = f.name
@@ -17,7 +19,7 @@ def speak(text: str):
     try:
         
         subprocess.run(
-            [PIPER, "--model", MODEL_PATH,"--length_scale","1.3" "--output_file", output_wav],
+            [PIPER, "--model", MODEL_PATH,"--length_scale","1.3", "--output_file", output_wav],
             stdin=open(tmp_path),
             check=True
         )

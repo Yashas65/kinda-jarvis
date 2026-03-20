@@ -26,5 +26,5 @@ schema =   {
 
 def func(app_name, args=''):
     app_name = app_name.lower()
-    subprocess.Popen(f"{app_name} {args}", shell=True)
+    subprocess.Popen([app_name,args])
     return f"Opened {app_name}with args {args}"
