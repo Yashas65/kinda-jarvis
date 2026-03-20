@@ -17,6 +17,7 @@ from . import open_app
 from .system_stats import schema as stats_schema , get_system_stats
 from .bluetooth_control import schema as bt_schema , func as bt_func #dictionary returning funcs
 from .file_operations import schema as file_ops_schema , func as file_ops
+from .manage_windows import schema as  windows_schema, func as window
 
 
 TOOL_SCHEMA = [
@@ -25,6 +26,7 @@ TOOL_SCHEMA = [
     stats_schema,
     *bt_schema,
     *file_ops_schema,
+    *windows_schema
 
 ]
 
@@ -39,5 +41,6 @@ TOOL_FUNC = {
     "read_file"                 :           file_ops['read_file'],
     "write_file"                :           file_ops['write_file'],
     "list_directory"            :           file_ops['list_directory'],
-
+    "list_active_windows"       :           window['list_active_windows'],
+    "switch_workspace"          :           window['switch_workspace'],
 }

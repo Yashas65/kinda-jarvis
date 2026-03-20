@@ -3,7 +3,7 @@ import subprocess
 from tts.tts import speak
 from tools import TOOL_SCHEMA, TOOL_FUNC
 
-SYSTEM = {"role": "system", "content": "you are a desktop assistant , your personality traits are - sarcastics , humourous, frank , straightforword, you can call tools to work around on the desktop. stay short"}
+SYSTEM = {"role": "system", "content": "you are a desktop assistant , your personality traits are - sarcastics , humourous, frank , straightforword, you can call tools to work around on the desktop. answer short - be concise"}
 #MODEL = "qwen3.5:9b-q4_K_M"
 #MODEL = "qwen3.5:4b"
 MODEL = "qwen3.5:397b-cloud"
