@@ -1,62 +1,7 @@
+# Command Blacklist for Security
+# Keep your system from imploding
 
-schema = [
-    {
-        "type":'function',
-        "function":{
-            "name": "get_system_stats",
-            "description": "Get RAM usage, CPU usage, disk space, and battery level. Call this when the user asks about ram, memory, cpu, processor, disk, storage, or battery.",
-            "parameters": {
-                "type": "object",
-                "properties": {},
-                "required": [],
-            },
-        }
-    },
-    {
-        "type":'function',
-        "function":{
-            "name":"run_system_command",
-            "description":'to run commands in the system shell, this is the last option you have , try dedicated tools first',
-            "parameters":{
-                "type":"object",
-                "properties":{
-                    "cmd":{
-                        "type":'string',
-                        "description":'command that is to be executed in system shell',
-                    }
-                },
-                "required":['cmd']
-            }
-        }
-    }
-
-]
-
-
-import psutil
-import shutil
-def get_system_stats() :
-    vm = psutil.virtual_memory()
-    total, used, _ = shutil.disk_usage("/")
-    batt = psutil.sensors_battery()
-
-    return {
-        "cpu_percent": psutil.cpu_percent(interval=0.5),
-        "ram_used_gb": round(vm.used / 1e9, 2),
-        "ram_total_gb": round(vm.total / 1e9, 2),
-        "ram_percent": vm.percent,
-        "disk_used_gb": round(used / 1e9, 2),
-        "disk_total_gb": round(total / 1e9, 2),
-        "disk_percent": round(used / total * 100, 1),
-        "battery_percent": round(batt.percent, 1) if batt else None,
-        "battery_charging": batt.power_plugged if batt else None,
-    }
-
-
-
-import subprocess
-black_list_of_commands=[            #written using this AI itself, using write in a file tool
-    "sudo",
+COMMAND_BLACKLIST = [
     "rm -rf /",                    # Deletes everything
     "rm -rf ~",                    # Deletes home directory
     "rm -rf *",                    # Deletes current directory contents
@@ -84,9 +29,7 @@ black_list_of_commands=[            #written using this AI itself, using write i
     "passwd",                      # Change passwords
     "echo > /proc/*",              # Mess with kernel params
     "echo 1 > /proc/sys/kernel/panic", # Kernel panic settings
-    "wget * | sh",                # Run random scripts
-    "wget",
-    "curl",
+    "wget * | sh",                 # Run random scripts
     "curl * | sh",                 # Run random scripts
     "curl * | bash",               # Run random bash scripts
     "wget * | bash",               # Run random bash scripts
@@ -108,19 +51,6 @@ black_list_of_commands=[            #written using this AI itself, using write i
     "cryptsetup luksFormat",       # Format encrypted volumes
 ]
 
-def run_system_command(cmd:str):
-    for x in black_list_of_commands:
-        if x in cmd : return "action not allowed for safety"
-    print("running.... ->",cmd)
-    cmd = cmd.split(' ')
-    if ";" in cmd: return "used ';' - not allowed , try executing a single command- trust me this is for your safety"
-    cmd = [str(x) for x in cmd]
-    output = subprocess.run(cmd , capture_output=True, text=True,timeout=5)
-    print(output)
-    return f"output :{output}"
-
-func = {
-    "run_system_command":run_system_command,
-    "get_system_stats":get_system_stats,
-
-}
+# Usage: Check if command in COMMAND_BLACKLIST before execution
+# if user_command in COMMAND_BLACKLIST:
+#     raise SecurityError("Command blacklisted!")

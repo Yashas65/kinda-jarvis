@@ -1,3 +1,5 @@
+# will add some more stuff later (mostly related to DDGS attributes)
+
 from ddgs import DDGS 
 
 schema = [
@@ -53,6 +55,7 @@ schema = [
         }
     },
 ]
+
 def web_search(query:str):
     print("searching ..... => ",query)        #trust ssues
     with DDGS() as ddgs:

@@ -14,12 +14,12 @@
 
 from . import get_current_time
 from . import open_app
-from .system_stuff import schema as system_schema , get_system_stats
+from .system_stuff import schema as system_schema , func as system_ops #opeartions
 from .bluetooth_control import schema as bt_schema , func as bt_func #dictionary returning funcs
 from .file_operations import schema as file_ops_schema , func as file_ops
 from .manage_windows import schema as  windows_schema, func as window
 from .web_search import schema as web_search_schema , func as search
-
+from .clipboard import schema as clipboard_schema , func as clipboard
 
 TOOL_SCHEMA = [
     get_current_time.schema,
@@ -28,12 +28,13 @@ TOOL_SCHEMA = [
     *bt_schema,
     *file_ops_schema,
     *windows_schema,
-    *web_search_schema
+    *web_search_schema,
+    *clipboard_schema,
 
 ]
 
 TOOL_FUNC = {
-    "get_system_stats"          :           get_system_stats,
+    "get_system_stats"          :           system_ops['get_system_stats'],
     "get_current_time"          :           get_current_time.func,
     "open_app"                  :           open_app.func,
     "bluetooth_scan"            :           bt_func['bluetooth_scan'],
@@ -47,5 +48,9 @@ TOOL_FUNC = {
     "switch_workspace"          :           window['switch_workspace'],
     "web_search"                :           search['web_search'],
     "news_search"               :           search['news_search'],
-    "product_search"            :           search['product_search']
+    "product_search"            :           search['product_search'],
+    "run_system_command"        :           system_ops['run_system_command'],
+    "write_clipboard"           :           clipboard['write'],
+    "read_clipboard"            :           clipboard['read']
+    
 }
