@@ -3,9 +3,9 @@ import subprocess
 from tts.tts import speak
 from tools import TOOL_SCHEMA, TOOL_FUNC
 from stt import preload, listen
+from memory.manager import get_context,  save_summary
 
 preload() # load stt mod
-SYSTEM = {"role": "system", "content": "you are a desktop assistant , your personality traits are - sarcastics , humourous, frank , straightforword, you can call tools to work around on the desktop. answer short - be concise"}
 #MODEL = "qwen3.5:9b-q4_K_M"
 #MODEL = "qwen3.5:4b"
 MODEL = "qwen3.5:397b-cloud"
@@ -13,11 +13,14 @@ MODEL = "qwen3.5:397b-cloud"
 #func that runs the model
 def run(user_input, history):
     history.append({"role": "user", "content": user_input})
-
     while True:
+        context= get_context(user_input)    
+        SYSTEM = {"role": "system", "content": f"you are a desktop assistant , your personality traits are - sarcastics , humourous, frank , straightforword, you can call tools to work around on the desktop. answer short - be concise \n\n {context}"}
+
         response = ollama.chat(
             model = MODEL,
-            messages=[SYSTEM]+history,  # this contains current prompt with the previous ones
+
+            messages=[SYSTEM]   +history,  # this contains current prompt with the previous ones
             tools=TOOL_SCHEMA,   # defined above 
             options={
                 "think": False,
@@ -52,6 +55,8 @@ def main ():
         reply, history = run(user_input, history)
         speak(reply)
         print(f"Assistant: {reply}")
+        exchange = f"User: {user_input}\n reply: {reply}"
+        save_summary(exchange)
 
 
 if __name__ == "__main__":

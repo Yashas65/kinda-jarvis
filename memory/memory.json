@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-03-27T03:17:52.859313",
+  "user": {
+    "name": "Yashas",
+    "language": "en",
+    "preferences": {
+      "response_style": "concise",
+      "tts_enabled": true
+    },
+    "facts": [
+      {
+        "key": "os",
+        "value": "Arch_linux",
+        "added": "2026-03-27"
+      },
+      {
+        "key": "shell",
+        "value": "bash",
+        "added": "2026-03-27"
+      }
+      
+    ],
+    "traits": [
+      "prefers technical depth",
+      "dislikes unnecessary verbosity"
+    ]
+  },
+  "goals": [],
+  "summaries_index": {
+    "backend": "chromadb",
+    "collection": "friday_summaries",
+    "embedding_model": "nomic-embed-text"
+  }
+}

@@ -15,7 +15,7 @@ processes makes a audio file and sends to esp32 then it is played to onto speake
 even tho wall-E is sitting on your desk it can work on your computer and talk all the stuff it can  do is stated in tools/ reffer there
 (ready!, if anyone waana help making it cross platform)
 <br>
-
+<h1> wall-E plan dropped probably i'll be making another robot</h1>
 # Privacy
 well , as this is also opensource and i respect your privacy , you have full freedom to choose any
 AI model you want , change the model name in main.py , also if not using a cloud model you will have
