@@ -19,6 +19,9 @@ use esp_hal::{
     }
 };
 
+
+use robot::uart_comm;
+
 #[panic_handler]
 fn panic(_: &core::panic::PanicInfo) -> ! {
     loop {}
@@ -40,6 +43,7 @@ async fn uart_task(mut uart: Uart<'static, Async>) {
         match uart.read_async(&mut buf).await {
             Ok(n) => {
                 let msg = core::str::from_utf8(&buf[..n]).unwrap_or("??");
+                uart_comm::handle_message(msg);
                 info!("Received: {}", msg);
                 // TODO: parse commands here
             }
